@@ -1,0 +1,4 @@
+apiVersion: dijkstra.jinli.io/v1
+kind: Display
+metadata:
+  name: dp-validate

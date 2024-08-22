@@ -1,0 +1,10 @@
+apiVersion: dijkstra.jinli.io/v1
+kind: Display
+metadata:
+  name: dp-new
+  namespace: default
+  ownerReferences:
+  - apiVersion: dijkstra.jinli.io/v2
+    kind: KnownNodes
+    name: kn-new
+    uid: 6a8496a1-dff5-44fe-ae7f-4f431b90b3ab

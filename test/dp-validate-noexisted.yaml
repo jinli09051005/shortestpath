@@ -1,0 +1,6 @@
+apiVersion: dijkstra.jinli.io/v1
+kind: Display
+metadata:
+  name: dp-validate-noexisted
+spec:
+  nodeIdentity: jinli-default-nodeid-noexisted

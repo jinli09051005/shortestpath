@@ -1,0 +1,9 @@
+apiVersion: dijkstra.jinli.io/v1
+kind: KnownNodes
+metadata:
+  name: kn-new
+  namespace: default
+  finalizers:
+  - dp.dijkstra.jinli.io/cleanup
+spec:
+  nodeIdentity: new

@@ -1,0 +1,80 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jinli-dijkstra-api-apiserver
+  namespace: jinlik8s-apiserver
+  labels:
+    api: jinli-dijkstra-api
+    apiserver: "true"
+spec:
+  selector:
+    matchLabels:
+      api: jinli-dijkstra-api
+      apiserver: "true"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        api: jinli-dijkstra-api
+        apiserver: "true"
+    spec:
+      containers:
+      - name: apiserver
+        image: jinli.harbor.com/jinlik8s-apiserver/jinli-dijkstra-api:v1.0.2
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: apiserver-certs
+          mountPath: /apiserver.local.config/certificates
+          readOnly: true
+        command:
+        - "/app/jinli-dijkstra-api"
+        args:
+        - "--etcd-servers=http://etcd-svc:2379"
+        - "--tls-cert-file=/apiserver.local.config/certificates/tls.crt"
+        - "--tls-private-key-file=/apiserver.local.config/certificates/tls.key"
+        - "--audit-log-path=-"
+        #- "--feature-gates=APIPriorityAndFairness=false"
+        - "--audit-log-maxage=0"
+        - "--audit-log-maxbackup=0"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+          limits:
+            cpu: 100m
+            memory: 300Mi
+      volumes:
+      - name: apiserver-certs
+        secret:
+          secretName: jinli-dijkstra-api
+---
+apiVersion: v1
+kind: Secret
+type: kubernetes.io/tls
+metadata:
+  name: jinli-dijkstra-api
+  namespace: jinlik8s-apiserver
+  labels:
+    api: jinli-dijkstra-api
+    apiserver: "true"
+data:
+  tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUR3ekNDQXF1Z0F3SUJBZ0lJRlVJRDlqaHJMYUl3RFFZSktvWklodmNOQVFFTEJRQXdjakVMTUFrR0ExVUUKQmhNQ2RXNHhDekFKQmdOVkJBZ01Bbk4wTVFvd0NBWURWUVFIREFGc01Rb3dDQVlEVlFRS0RBRnZNUXN3Q1FZRApWUVFMREFKdmRURXhNQzhHQTFVRUF3d29hbWx1YkdrdFpHbHFhM04wY21FdFlYQnBMV05sY25ScFptbGpZWFJsCkxXRjFkR2h2Y21sMGVUQWVGdzB5TkRBNE1EZ3dOalU0TXpkYUZ3MHpOREE0TURZd05qVTRNemRhTURReE1qQXcKQmdOVkJBTVRLV3BwYm14cExXUnBhbXR6ZEhKaExXRndhUzVxYVc1c2FXczRjeTFoY0dselpYSjJaWEl1YzNaagpNSUlCSWpBTkJna3Foa2lHOXcwQkFRRUZBQU9DQVE4QU1JSUJDZ0tDQVFFQXJFZ1pqdDAwU3RuZ2dxYVNlRXRNCjBpUkVQQ0pOV3ViYjRNVXpXMTF3Y0Q1UW1XbGZnU0hmazU1VUR0dXZ3Z2wvbkc3b0JhK1JibU9PNUc5M1dXZUgKOUsyRUhRcnFROU5xMFVQbS8xRmFIZXIxNzlxbHlqTEE4TUFBK2wrZURLakpvWGVSTFhWRnhDUUt1TTFLbHd4UApJVUU4b3hrWjVlbERXb3ZjUEo2aU1IL01JaWJEYTVzY2Q2c2liSy9WNGFrdDVaOVBpUDZKd1NNY25lL0lxUU1XCjlPNU51elVvR2JyQ1dWMWdqelEwWHRyY1B5Vlp2L0tya3NXODNuc0ZDdFRCU05XNEcvSzgxSUU4aG1SamhWaUMKaXEvYUFRUHNCbkpEWXVUYnYySm14T2E4YnZvekZqcVY0Q0xWalBXSTAvY0dWM1lFVCt2VnFzb3hXU3UraXBHRgpzUUlEQVFBQm80R2FNSUdYTUE0R0ExVWREd0VCL3dRRUF3SUZvREFkQmdOVkhTVUVGakFVQmdnckJnRUZCUWNECkFRWUlLd1lCQlFVSEF3SXdId1lEVlIwakJCZ3dGb0FVM28xTm1Fdm45SisrN1VTdDF2SjBLTDBhSjdNd1JRWUQKVlIwUkJENHdQSUlKYkc5allXeG9iM04wZ2lscWFXNXNhUzFrYVdwcmMzUnlZUzFoY0drdWFtbHViR2xyT0hNdApZWEJwYzJWeWRtVnlMbk4yWTRjRWZ3QUFBVEFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBalNydWVtc3RJbEw4CmROdGhMaVMxZUg1ekI4Y3N2MktVZWNZbTk1d0FVVkRhWElldlp0UVFJcjE0ZlpFdVcrNnR0SGFLSXRFZDh6U1EKUlJaZnQ3TWlWM3pidW5oNlN3T1hiaXdtV25wUG5RUXVpU3VLY0FvMWtoTVFSUkVoMit5cll5VUFGMUF2aGYrRApEbGlSRlR4eWZUOUFZc3NyKzVIYWZBejNqbExzRXZ1V0pFRnZ0bDRHdXZqMk9qb09DTnJkTFQvVHFoTnpQNWpIClcrSVRsdmVDT2xzMXhOVjlPdDBOSWZ4c3NVd0NNdU85d0Q2UTlhQlQyN3B1U3VtUXBhblBSRkdMZmU1QVZsclEKVzVzTGozT2k0ZUhBQ1ducHU5ZWtFMWhja3p4ZXcrK3pERlBBTU92ZC83YTErK3AxMElCK2xpdzMyaUlOSFMyRQpHR0ZHUVRLYVRBPT0KLS0tLS1FTkQgQ0VSVElGSUNBVEUtLS0tLQo=
+  tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFb3dJQkFBS0NBUUVBckVnWmp0MDBTdG5nZ3FhU2VFdE0waVJFUENKTld1YmI0TVV6VzExd2NENVFtV2xmCmdTSGZrNTVVRHR1dndnbC9uRzdvQmErUmJtT081RzkzV1dlSDlLMkVIUXJxUTlOcTBVUG0vMUZhSGVyMTc5cWwKeWpMQThNQUErbCtlREtqSm9YZVJMWFZGeENRS3VNMUtsd3hQSVVFOG94a1o1ZWxEV292Y1BKNmlNSC9NSWliRAphNXNjZDZzaWJLL1Y0YWt0NVo5UGlQNkp3U01jbmUvSXFRTVc5TzVOdXpVb0dickNXVjFnanpRMFh0cmNQeVZaCnYvS3Jrc1c4M25zRkN0VEJTTlc0Ry9LODFJRThobVJqaFZpQ2lxL2FBUVBzQm5KRFl1VGJ2MkpteE9hOGJ2b3oKRmpxVjRDTFZqUFdJMC9jR1YzWUVUK3ZWcXNveFdTdStpcEdGc1FJREFRQUJBb0lCQVFDRGdiM1FxZFhDMVRGbApTWlZBc2VuLzlxTUhhLyswUmNqTmVIcE5ZYlAwV2Z6WVBmRWk5eUpjNGx5endzb1V5WDlaZitjb2YrMzVYNUd4Cm1jeDJ1R3ExUU1ZNkRSenBqVFphYXdTbkhBZzRFaVNOWkU5dFd2U2dVVS90enBNc2dxTDIxL2cveE9idVk3eXoKZURGWnY1R2ZodGFzZ1BxZDMwTUVtUUlTVzl6ZU8wNlBnZXpMYmQ0dkRJREhCWW9IMHZuVDh2WW0rQ245MERWagpsZnNMRTFBUXpFTjAzNXhhNURjakVKL0c2M3NoaEpyUERqQUdaRlFvc0taY1VOSFhmY1d4dWs0N1hibHIxUlZqCjJQNHJoUnRNbjZYYnFoTlY5cFhCSThyQTB1NGxGSGRWRVozcGgwUEJjTWVIUmJQR1pYM2p2UjRKK2g3V3lhZ0gKRFVPZjNTZ0JBb0dCQU5JT3dMeUhLZHNZSy9KSFNEdTZPWEhtTDllQXVMR1lQTmdrQjlTTTFDYWVRcmRvSVVVagpkajN5YjVZUnpsSjNJU0gyWDBvMC84dUtMN3dTOUF4M2ZGaFRNL29iWjJ1VnBSMFozeGFpYXgxa3pIZ0RHU2VVCmRIWXZJRmpwKzBwZW54bnFnRHVvZFJPUjE4TkkzR3ZTWlc5QnVGSDlQTE5MK201SlZKclc3TlBCQW9HQkFOSDIKUDJqeG9hclkwTEFOSXZ2R2tnQjVLYU1jUlEvR2JqMUFacEJEOFhsSEtiMFJNNnRRUDMzb0gxZk5hQUF4Mkt6NApmM3l4VVJVZ05yUGdZU1NRQ0FLeWVNc2Y2ZW1YUzQwNkhPcXhPejhCTm1kdUZFaktLZCtnUkl3azNjN0tOK1JNClV2cEVweDJkQzk0RWlOSEgzbzJ4aEpQMkdiUXJQeW1Kdjgrb3RXM3hBb0dBREhsNzBMWm1NZkM1aTJYWVVGTzYKM1p6QjhwWmVZWTJjNzJrVVhmY1BFa3dMd2tDWTJUWkY2MS9lYUpjZUhaK2RoQnJSaGVLbjNqcVNveVN0QWFDRwo3ZWZqQ2xOZVRQRlNJT3hNWjFlMTdNVHpyNXpmZlk0L2JGVllJbStpME1QVnh3QTZKVkRYd3hYQ0xvTEJORllHCldCa2JEU053MjJVRHRsRDhpVVdDUXdFQ2dZQmZjZkdoWXpaNjA5VUtNdTZVUmRCWkpyc215dE1hT0xva1hnSkIKMHFFUzRLYTRxL2t4QjJuVmNvL00rak1zNDN2OEpYck8xRXhucmgwdjUvQkJEcmlWZ1V3b0NubnJGanZpRjJqTgp4NE9IUUtYYW5zL1p4dzBCKzNrdHZCU1l6SlJiMDlaa3JwREpoWHEva3BBZnpSditqWlFYTHVqQVhtaDRHWVo0CmY5ajZBUUtCZ0FaRUgxSVJGQS84NXVCV0tHSlNCS29jNStIUURFY3p6enU3ejVldlFHMStSWE1BOGEwTkhTb0gKV05scjhFM0tYOHZXOE1WRTJZMHQ2VDJNR3AxTUNQSkdtcUFXYVpBSG1wejZJZC9wNnFTZjhQVHFRYnRaTUR5VQo5SXk1MjZsTlFSR2xuenN0dkZ2bkF3MzVrcGNSb1p4NzVTQi9iTVcrS3haTzl4a3lkZ2VlCi0tLS0tRU5EIFJTQSBQUklWQVRFIEtFWS0tLS0tCg==
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jinli-dijkstra-api
+  namespace: jinlik8s-apiserver
+  labels:
+    api: jinli-dijkstra-api
+    apiserver: "true"
+spec:
+  ports:
+  - port: 443
+    protocol: TCP
+    targetPort: 443
+  selector:
+    api: jinli-dijkstra-api
+    apiserver: "true"
