@@ -106,8 +106,10 @@ func (s Strategy) Validate(ctx context.Context, obj runtime.Object) field.ErrorL
 	if err != nil {
 		klog.Error(err)
 		fielderr = field.Invalid(field.NewPath("spec", "nodeIdentity"), dp.Spec.NodeIdentity, "KnownNodes with the same nodeIdentity could not be found!")
+		return append(errList, fielderr)
 	} else if len(kns.Items) == 0 {
 		fielderr = field.Invalid(field.NewPath("spec", "nodeIdentity"), dp.Spec.NodeIdentity, "KnownNodes with the same nodeIdentity need to be created before creating Display!")
+		return append(errList, fielderr)
 	}
 
 	// 相同NodeIdentity的StartNode不允许相同
@@ -117,20 +119,18 @@ func (s Strategy) Validate(ctx context.Context, obj runtime.Object) field.ErrorL
 	if err != nil {
 		klog.Error(err)
 		fielderr = field.Invalid(field.NewPath("spec", "nodeIdentity"), dp.Spec.NodeIdentity, "Display with the same nodeIdentity could not be found!")
+		return append(errList, fielderr)
 	} else if len(dps.Items) != 0 {
 		for i := range dps.Items {
 			if dps.Items[i].Spec.StartNode.ID != dp.Spec.StartNode.ID {
 				continue
 			}
 			fielderr = field.Invalid(field.NewPath("spec", "startNode"), dp.Spec.StartNode, "Display with the same nodeIdentity and startNode.ID not allow!")
-			break
+			return append(errList, fielderr)
 		}
 	}
 
-	if fielderr == nil {
-		return errList
-	}
-	return append(errList, fielderr)
+	return errList
 }
 
 func (s Strategy) WarningsOnCreate(ctx context.Context, obj runtime.Object) []string {
