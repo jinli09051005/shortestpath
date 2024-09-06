@@ -218,7 +218,6 @@ func autoConvert_v2_DisplaySpec_To_dijkstra_DisplaySpec(in *DisplaySpec, out *di
 	if err := Convert_v2_StartNode_To_dijkstra_StartNode(&in.StartNode, &out.StartNode, s); err != nil {
 		return err
 	}
-	out.TargetNodes = *(*[]dijkstra.TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	out.Algorithm = in.Algorithm
 	return nil
 }
@@ -233,7 +232,6 @@ func autoConvert_dijkstra_DisplaySpec_To_v2_DisplaySpec(in *dijkstra.DisplaySpec
 	if err := Convert_dijkstra_StartNode_To_v2_StartNode(&in.StartNode, &out.StartNode, s); err != nil {
 		return err
 	}
-	out.TargetNodes = *(*[]TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	out.Algorithm = in.Algorithm
 	return nil
 }
@@ -244,8 +242,10 @@ func Convert_dijkstra_DisplaySpec_To_v2_DisplaySpec(in *dijkstra.DisplaySpec, ou
 }
 
 func autoConvert_v2_DisplayStatus_To_dijkstra_DisplayStatus(in *DisplayStatus, out *dijkstra.DisplayStatus, s conversion.Scope) error {
+	out.TargetNodes = *(*[]dijkstra.TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	out.LastUpdate = in.LastUpdate
 	out.ComputeStatus = in.ComputeStatus
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 
@@ -255,8 +255,10 @@ func Convert_v2_DisplayStatus_To_dijkstra_DisplayStatus(in *DisplayStatus, out *
 }
 
 func autoConvert_dijkstra_DisplayStatus_To_v2_DisplayStatus(in *dijkstra.DisplayStatus, out *DisplayStatus, s conversion.Scope) error {
+	out.TargetNodes = *(*[]TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	out.LastUpdate = in.LastUpdate
 	out.ComputeStatus = in.ComputeStatus
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 
@@ -367,6 +369,7 @@ func Convert_dijkstra_KnownNodesSpec_To_v2_KnownNodesSpec(in *dijkstra.KnownNode
 
 func autoConvert_v2_KnownNodesStatus_To_dijkstra_KnownNodesStatus(in *KnownNodesStatus, out *dijkstra.KnownNodesStatus, s conversion.Scope) error {
 	out.LastUpdate = in.LastUpdate
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 
@@ -377,6 +380,7 @@ func Convert_v2_KnownNodesStatus_To_dijkstra_KnownNodesStatus(in *KnownNodesStat
 
 func autoConvert_dijkstra_KnownNodesStatus_To_v2_KnownNodesStatus(in *dijkstra.KnownNodesStatus, out *KnownNodesStatus, s conversion.Scope) error {
 	out.LastUpdate = in.LastUpdate
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 

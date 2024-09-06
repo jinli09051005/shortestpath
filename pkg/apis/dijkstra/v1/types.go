@@ -70,6 +70,9 @@ type KnownNodesStatus struct {
 	// Last Update Time
 	// +optional
 	LastUpdate metav1.Time `json:"lastUpdate,omitempty" protobuf:"bytes,1,opt,name=lastUpdate"`
+	// Record
+	// +optional
+	Record map[string]string `json:"record,omitempty" protobuf:"bytes,2,opt,name=record"`
 }
 
 // +genclient
@@ -104,9 +107,6 @@ type DisplaySpec struct {
 	// Start node information
 	// +optional
 	StartNode StartNode `json:"startNode,omitempty" protobuf:"bytes,2,rep,name=startNode"`
-	// Target nodes information
-	// +optional
-	TargetNodes []TargetNode `json:"targetNodes,omitempty" protobuf:"bytes,3,rep,name=targetNodes"`
 }
 
 type StartNode struct {
@@ -135,7 +135,13 @@ type TargetNode struct {
 
 // DisplayStatus defines the observed state of Display
 type DisplayStatus struct {
+	// Target nodes information
+	// +optional
+	TargetNodes []TargetNode `json:"targetNodes,omitempty" protobuf:"bytes,1,rep,name=targetNodes"`
 	// Last Update Time
 	// +optional
-	LastUpdate metav1.Time `json:"lastUpdate,omitempty" protobuf:"bytes,1,opt,name=lastUpdate"`
+	LastUpdate metav1.Time `json:"lastUpdate,omitempty" protobuf:"bytes,2,opt,name=lastUpdate"`
+	// Record
+	// +optional
+	Record map[string]string `json:"record,omitempty" protobuf:"bytes,3,opt,name=record"`
 }

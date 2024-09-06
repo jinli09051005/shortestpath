@@ -72,6 +72,9 @@ type KnownNodesStatus struct {
 	// Last Update Time
 	// +optional
 	LastUpdate metav1.Time `json:"lastUpdate,omitempty" protobuf:"bytes,1,opt,name=lastUpdate"`
+	// Record
+	// +optional
+	Record map[string]string `json:"record,omitempty" protobuf:"bytes,2,opt,name=record"`
 }
 
 // +genclient
@@ -105,11 +108,6 @@ type DisplaySpec struct {
 	// Start node information
 	// +optional
 	StartNode StartNode `json:"startNode,omitempty" protobuf:"bytes,2,rep,name=startNode"`
-	// Target nodes information
-	// +optional
-	// +patchMergeKey=id
-	// +patchStrategy=merge
-	TargetNodes []TargetNode `json:"targetNodes,omitempty" patchStrategy:"merge" patchMergeKey:"id" protobuf:"bytes,3,rep,name=targetNodes"`
 	// Algorithms used to calculate the shortest path, including dijkstra and floyd algorithms
 	// +optional
 	Algorithm string `json:"algorithm,omitempty" protobuf:"bytes,4,rep,name=algorithm"`
@@ -141,10 +139,18 @@ type TargetNode struct {
 
 // DisplayStatus defines the observed state of Display
 type DisplayStatus struct {
+	// Target nodes information
+	// +optional
+	// +patchMergeKey=id
+	// +patchStrategy=merge
+	TargetNodes []TargetNode `json:"targetNodes,omitempty" patchStrategy:"merge" patchMergeKey:"id" protobuf:"bytes,1,rep,name=targetNodes"`
 	// Last Update Time
 	// +optional
-	LastUpdate metav1.Time `json:"lastUpdate,omitempty" protobuf:"bytes,1,opt,name=lastUpdate"`
+	LastUpdate metav1.Time `json:"lastUpdate,omitempty" protobuf:"bytes,2,opt,name=lastUpdate"`
 	// Dispaly  ShortestPath Compute Status
 	// +optional
-	ComputeStatus string `json:"computeStatus,omitempty" protobuf:"bytes,2,opt,name=computeStatus"`
+	ComputeStatus string `json:"computeStatus,omitempty" protobuf:"bytes,3,opt,name=computeStatus"`
+	// Record
+	// +optional
+	Record map[string]string `json:"record,omitempty" protobuf:"bytes,4,opt,name=record"`
 }

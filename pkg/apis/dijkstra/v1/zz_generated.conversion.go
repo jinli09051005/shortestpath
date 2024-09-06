@@ -238,7 +238,6 @@ func autoConvert_v1_DisplaySpec_To_dijkstra_DisplaySpec(in *DisplaySpec, out *di
 	if err := Convert_v1_StartNode_To_dijkstra_StartNode(&in.StartNode, &out.StartNode, s); err != nil {
 		return err
 	}
-	out.TargetNodes = *(*[]dijkstra.TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	return nil
 }
 
@@ -247,19 +246,22 @@ func autoConvert_dijkstra_DisplaySpec_To_v1_DisplaySpec(in *dijkstra.DisplaySpec
 	if err := Convert_dijkstra_StartNode_To_v1_StartNode(&in.StartNode, &out.StartNode, s); err != nil {
 		return err
 	}
-	out.TargetNodes = *(*[]TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	// WARNING: in.Algorithm requires manual conversion: does not exist in peer-type
 	return nil
 }
 
 func autoConvert_v1_DisplayStatus_To_dijkstra_DisplayStatus(in *DisplayStatus, out *dijkstra.DisplayStatus, s conversion.Scope) error {
+	out.TargetNodes = *(*[]dijkstra.TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	out.LastUpdate = in.LastUpdate
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 
 func autoConvert_dijkstra_DisplayStatus_To_v1_DisplayStatus(in *dijkstra.DisplayStatus, out *DisplayStatus, s conversion.Scope) error {
+	out.TargetNodes = *(*[]TargetNode)(unsafe.Pointer(&in.TargetNodes))
 	out.LastUpdate = in.LastUpdate
 	// WARNING: in.ComputeStatus requires manual conversion: does not exist in peer-type
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 
@@ -365,6 +367,7 @@ func Convert_dijkstra_KnownNodesSpec_To_v1_KnownNodesSpec(in *dijkstra.KnownNode
 
 func autoConvert_v1_KnownNodesStatus_To_dijkstra_KnownNodesStatus(in *KnownNodesStatus, out *dijkstra.KnownNodesStatus, s conversion.Scope) error {
 	out.LastUpdate = in.LastUpdate
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 
@@ -375,6 +378,7 @@ func Convert_v1_KnownNodesStatus_To_dijkstra_KnownNodesStatus(in *KnownNodesStat
 
 func autoConvert_dijkstra_KnownNodesStatus_To_v1_KnownNodesStatus(in *dijkstra.KnownNodesStatus, out *KnownNodesStatus, s conversion.Scope) error {
 	out.LastUpdate = in.LastUpdate
+	out.Record = *(*map[string]string)(unsafe.Pointer(&in.Record))
 	return nil
 }
 

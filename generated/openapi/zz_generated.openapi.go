@@ -228,6 +228,21 @@ func schema_pkg_apis_dijkstra_v1_DisplaySpec(ref common.ReferenceCallback) commo
 							Ref:         ref("jinli.io/shortestpath/pkg/apis/dijkstra/v1.StartNode"),
 						},
 					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"jinli.io/shortestpath/pkg/apis/dijkstra/v1.StartNode"},
+	}
+}
+
+func schema_pkg_apis_dijkstra_v1_DisplayStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "DisplayStatus defines the observed state of Display",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
 					"targetNodes": {
 						SchemaProps: spec.SchemaProps{
 							Description: "Target nodes information",
@@ -242,21 +257,6 @@ func schema_pkg_apis_dijkstra_v1_DisplaySpec(ref common.ReferenceCallback) commo
 							},
 						},
 					},
-				},
-			},
-		},
-		Dependencies: []string{
-			"jinli.io/shortestpath/pkg/apis/dijkstra/v1.StartNode", "jinli.io/shortestpath/pkg/apis/dijkstra/v1.TargetNode"},
-	}
-}
-
-func schema_pkg_apis_dijkstra_v1_DisplayStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
-	return common.OpenAPIDefinition{
-		Schema: spec.Schema{
-			SchemaProps: spec.SchemaProps{
-				Description: "DisplayStatus defines the observed state of Display",
-				Type:        []string{"object"},
-				Properties: map[string]spec.Schema{
 					"lastUpdate": {
 						SchemaProps: spec.SchemaProps{
 							Description: "Last Update Time",
@@ -264,11 +264,27 @@ func schema_pkg_apis_dijkstra_v1_DisplayStatus(ref common.ReferenceCallback) com
 							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
 						},
 					},
+					"record": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Record",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: "",
+										Type:    []string{"string"},
+										Format:  "",
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
+			"jinli.io/shortestpath/pkg/apis/dijkstra/v1.TargetNode", "k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
 	}
 }
 
@@ -451,6 +467,22 @@ func schema_pkg_apis_dijkstra_v1_KnownNodesStatus(ref common.ReferenceCallback) 
 							Description: "Last Update Time",
 							Default:     map[string]interface{}{},
 							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"record": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Record",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: "",
+										Type:    []string{"string"},
+										Format:  "",
+									},
+								},
+							},
 						},
 					},
 				},
@@ -693,6 +725,28 @@ func schema_pkg_apis_dijkstra_v2_DisplaySpec(ref common.ReferenceCallback) commo
 							Ref:         ref("jinli.io/shortestpath/pkg/apis/dijkstra/v2.StartNode"),
 						},
 					},
+					"algorithm": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Algorithms used to calculate the shortest path, including dijkstra and floyd algorithms",
+							Type:        []string{"string"},
+							Format:      "",
+						},
+					},
+				},
+			},
+		},
+		Dependencies: []string{
+			"jinli.io/shortestpath/pkg/apis/dijkstra/v2.StartNode"},
+	}
+}
+
+func schema_pkg_apis_dijkstra_v2_DisplayStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
+	return common.OpenAPIDefinition{
+		Schema: spec.Schema{
+			SchemaProps: spec.SchemaProps{
+				Description: "DisplayStatus defines the observed state of Display",
+				Type:        []string{"object"},
+				Properties: map[string]spec.Schema{
 					"targetNodes": {
 						VendorExtensible: spec.VendorExtensible{
 							Extensions: spec.Extensions{
@@ -713,28 +767,6 @@ func schema_pkg_apis_dijkstra_v2_DisplaySpec(ref common.ReferenceCallback) commo
 							},
 						},
 					},
-					"algorithm": {
-						SchemaProps: spec.SchemaProps{
-							Description: "Algorithms used to calculate the shortest path, including dijkstra and floyd algorithms",
-							Type:        []string{"string"},
-							Format:      "",
-						},
-					},
-				},
-			},
-		},
-		Dependencies: []string{
-			"jinli.io/shortestpath/pkg/apis/dijkstra/v2.StartNode", "jinli.io/shortestpath/pkg/apis/dijkstra/v2.TargetNode"},
-	}
-}
-
-func schema_pkg_apis_dijkstra_v2_DisplayStatus(ref common.ReferenceCallback) common.OpenAPIDefinition {
-	return common.OpenAPIDefinition{
-		Schema: spec.Schema{
-			SchemaProps: spec.SchemaProps{
-				Description: "DisplayStatus defines the observed state of Display",
-				Type:        []string{"object"},
-				Properties: map[string]spec.Schema{
 					"lastUpdate": {
 						SchemaProps: spec.SchemaProps{
 							Description: "Last Update Time",
@@ -749,11 +781,27 @@ func schema_pkg_apis_dijkstra_v2_DisplayStatus(ref common.ReferenceCallback) com
 							Format:      "",
 						},
 					},
+					"record": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Record",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: "",
+										Type:    []string{"string"},
+										Format:  "",
+									},
+								},
+							},
+						},
+					},
 				},
 			},
 		},
 		Dependencies: []string{
-			"k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
+			"jinli.io/shortestpath/pkg/apis/dijkstra/v2.TargetNode", "k8s.io/apimachinery/pkg/apis/meta/v1.Time"},
 	}
 }
 
@@ -942,6 +990,22 @@ func schema_pkg_apis_dijkstra_v2_KnownNodesStatus(ref common.ReferenceCallback) 
 							Description: "Last Update Time",
 							Default:     map[string]interface{}{},
 							Ref:         ref("k8s.io/apimachinery/pkg/apis/meta/v1.Time"),
+						},
+					},
+					"record": {
+						SchemaProps: spec.SchemaProps{
+							Description: "Record",
+							Type:        []string{"object"},
+							AdditionalProperties: &spec.SchemaOrBool{
+								Allows: true,
+								Schema: &spec.Schema{
+									SchemaProps: spec.SchemaProps{
+										Default: "",
+										Type:    []string{"string"},
+										Format:  "",
+									},
+								},
+							},
 						},
 					},
 				},

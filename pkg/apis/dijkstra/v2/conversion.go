@@ -45,7 +45,6 @@ func AddFieldLabelConversionForDisplay(scheme *runtime.Scheme) error {
 	mapping := map[string]string{
 		"spec.nodeIdentity":  "spec.nodeIdentity",
 		"spec.startNode":     "spec.startNode",
-		"spec.targetNodes":   "spec.targetNodes",
 		"spec.algorithm":     "spec.algorithm",
 		"metadata.namespace": "metadata.namespace",
 		"metadata.name":      "metadata.name",

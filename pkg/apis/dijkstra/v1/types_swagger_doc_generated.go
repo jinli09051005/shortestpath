@@ -19,7 +19,6 @@ var map_DisplaySpec = map[string]string {
 		"": "DisplaySpec defines the desired state of Display",
 		"nodeIdentity": "A type of node identity",
 		"startNode": "Start node information",
-		"targetNodes": "Target nodes information",
 }
 func (DisplaySpec) SwaggerDoc() map[string]string {
 	return map_DisplaySpec
@@ -27,7 +26,9 @@ func (DisplaySpec) SwaggerDoc() map[string]string {
 
 var map_DisplayStatus = map[string]string {
 		"": "DisplayStatus defines the observed state of Display",
+		"targetNodes": "Target nodes information",
 		"lastUpdate": "Last Update Time",
+		"record": "Record",
 }
 func (DisplayStatus) SwaggerDoc() map[string]string {
 	return map_DisplayStatus
@@ -69,6 +70,7 @@ func (KnownNodesSpec) SwaggerDoc() map[string]string {
 var map_KnownNodesStatus = map[string]string {
 		"": "KnownNodesStatus defines the observed state of KnownNodes",
 		"lastUpdate": "Last Update Time",
+		"record": "Record",
 }
 func (KnownNodesStatus) SwaggerDoc() map[string]string {
 	return map_KnownNodesStatus

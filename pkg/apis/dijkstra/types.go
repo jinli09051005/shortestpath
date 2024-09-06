@@ -69,6 +69,9 @@ type KnownNodesStatus struct {
 	// Last Update Time
 	// +optional
 	LastUpdate metav1.Time
+	// Record
+	// +optional
+	Record map[string]string
 }
 
 // +genclient
@@ -102,9 +105,6 @@ type DisplaySpec struct {
 	// Start node information
 	// +optional
 	StartNode StartNode
-	// Target nodes information
-	// +optional
-	TargetNodes []TargetNode
 	// Algorithms used to calculate the shortest path, including dijkstra and floyd algorithms
 	// +optional
 	Algorithm string
@@ -136,10 +136,16 @@ type TargetNode struct {
 
 // DisplayStatus defines the observed state of Display
 type DisplayStatus struct {
+	// Target nodes information
+	// +optional
+	TargetNodes []TargetNode
 	// Last Update Time
 	// +optional
 	LastUpdate metav1.Time
 	// Dispaly  ShortestPath Compute Status
 	// +optional
 	ComputeStatus string
+	// Record
+	// +optional
+	Record map[string]string
 }
