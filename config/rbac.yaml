@@ -40,3 +40,49 @@ subjects:
   - kind: ServiceAccount
     namespace: default
     name: default
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: controller-manager
+  namespace: jinlik8s-apiserver
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: jinli-dijkstra-controller
+rules:
+  - apiGroups:
+      - 'dijkstra.jinli.io'
+    resources:
+      - '*'
+    verbs:
+      - '*'
+  - apiGroups:
+      - 'admissionregistration.k8s.io'
+    resources:
+      - '*'
+    verbs:
+      - 'list'
+      - 'watch'
+  - nonResourceURLs:
+      - '*'
+    verbs:
+      - '*'
+  
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: jinli-dijkstra-controller
+  namespace: jinlik8s-apiserver
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: jinli-dijkstra-controller
+subjects:
+  - kind: ServiceAccount
+    name: controller-manager
+    namespace: jinlik8s-apiserver

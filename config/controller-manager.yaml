@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jinli-dijkstra-api-controller
+  namespace: jinlik8s-apiserver
+  labels:
+    api: jinli-dijkstra-api
+    controller: "true"
+spec:
+  selector:
+    matchLabels:
+      api: jinli-dijkstra-api
+      controller: "true"
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        api: jinli-dijkstra-api
+        controller: "true"
+    spec:
+      containers:
+      - name: controller
+        image: jinli.harbor.com/jinlik8s-apiserver/jinli-dijkstra-controller:v1.0.1
+        command:
+        - "/app/jinli-dijkstra-controller"
+        args:
+        - --leader-elect
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - "ALL"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          requests:
+            cpu: 100m
+            memory: 200Mi
+          limits:
+            cpu: 100m
+            memory: 300Mi
+      serviceAccountName: controller-manager
+      terminationGracePeriodSeconds: 10
