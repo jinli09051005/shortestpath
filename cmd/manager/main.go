@@ -32,6 +32,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 
 	"jinli.io/shortestpath/cmd/manager/controllers"
+	// "jinli.io/shortestpath/cmd/manager/controllers2"
 	dijkstrav1 "jinli.io/shortestpath/pkg/apis/dijkstra/v1"
 	dijkstrav2 "jinli.io/shortestpath/pkg/apis/dijkstra/v2"
 	//+kubebuilder:scaffold:imports
@@ -108,6 +109,7 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "Display")
 		os.Exit(1)
 	}
+	// go controllers2.RunController(scheme, restConfig)
 
 	//+kubebuilder:scaffold:builder
 
