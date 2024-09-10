@@ -252,8 +252,7 @@ func (r *KnownNodesReconciler) handleDependencies(ctx context.Context, kn *dijks
 		status := dpCopy.Status
 		if !TargetNodesEqual(newTargetNode, oldTargetNode) {
 			// 更新子资源列表
-			for i := 0; i < 5; i++ {
-				//创建Display前相同NodeIdentity的KnownNodes需要创建
+			for j := 0; j < 5; j++ {
 				name := types.NamespacedName{
 					Name:      dpList.Items[i].Name,
 					Namespace: dpList.Items[i].Namespace,
@@ -277,7 +276,6 @@ func (r *KnownNodesReconciler) handleDependencies(ctx context.Context, kn *dijks
 
 				break
 			}
-			return nil
 		}
 	}
 
