@@ -189,6 +189,11 @@ func (r *KnownNodesReconciler) update(ctx context.Context, name types.Namespaced
 			knCopy.Annotations = annotations
 		} else {
 			updateDPFlag = true
+			if knCopy.Annotations["nodes"] != strconv.Itoa(len(knCopy.Spec.Nodes)) {
+				updateFlag = true
+				// 更新Annotation nodes标签
+				knCopy.Annotations["nodes"] = strconv.Itoa(len(knCopy.Spec.Nodes))
+			}
 		}
 
 		if updateFlag {
