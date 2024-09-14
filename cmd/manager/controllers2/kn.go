@@ -210,7 +210,7 @@ func (kc *KnController) update(ctx context.Context, kn *dijkstrav2.KnownNodes) e
 	labelSelector := labels.Set(map[string]string{"nodeIdentity": kn.Labels["nodeIdentity"]}).AsSelector().String()
 	// 更新资源
 	for i := 0; i < 5; i++ {
-		kn, err := kc.client.DijkstraV2().KnownNodeses(kn.Namespace).Get(ctx, kn.Name, metav1.GetOptions{})
+		kn, err := kc.knLister.KnownNodeses(kn.Namespace).Get(kn.Name)
 		if err != nil {
 			klog.Error(err)
 			return err
@@ -245,13 +245,15 @@ func (kc *KnController) update(ctx context.Context, kn *dijkstrav2.KnownNodes) e
 	if updateDPFlag {
 		// 更新KN状态
 		for i := 0; i < 5; i++ {
-			kn, err := kc.client.DijkstraV2().KnownNodeses(kn.Namespace).Get(ctx, kn.Name, metav1.GetOptions{})
+			oldKn, err := kc.knLister.KnownNodeses(kn.Namespace).Get(kn.Name)
 			if err != nil {
 				klog.Error(err)
 				return err
 			}
-			kn.Status.LastUpdate = metav1.NewTime(time.Now())
-			_, err = kc.client.DijkstraV2().KnownNodeses(kn.Namespace).UpdateStatus(ctx, kn, metav1.UpdateOptions{})
+
+			newKn := oldKn.DeepCopy()
+			newKn.Status.LastUpdate = metav1.NewTime(time.Now())
+			_, err = kc.client.DijkstraV2().KnownNodeses(newKn.Namespace).UpdateStatus(ctx, newKn, metav1.UpdateOptions{})
 			if err != nil {
 				if errors.IsConflict(err) {
 					continue
