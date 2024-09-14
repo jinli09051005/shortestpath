@@ -11,7 +11,7 @@ spec:
     matchLabels:
       api: jinli-dijkstra-api
       controller: "true"
-  replicas: 1
+  replicas: 2
   template:
     metadata:
       labels:
