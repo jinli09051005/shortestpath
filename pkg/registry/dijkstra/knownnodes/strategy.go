@@ -30,6 +30,7 @@ var _ rest.RESTCreateStrategy = &Strategy{}
 var _ rest.RESTUpdateStrategy = &Strategy{}
 var _ rest.RESTDeleteStrategy = &Strategy{}
 var _ rest.GarbageCollectionDeleteStrategy = &Strategy{}
+var _ rest.ResetFieldsStrategy = &Strategy{}
 
 // NewStrategy creates and returns a updateconfigStrtegy instance
 func NewStrategy(typer runtime.ObjectTyper, dijkstraClient dijkstraclient.DijkstraInterface) Strategy {
@@ -190,6 +191,9 @@ type StatusStrategy struct {
 func NewStatusStrategy(strategy Strategy) StatusStrategy {
 	return StatusStrategy{strategy}
 }
+
+var _ rest.RESTUpdateStrategy = &StatusStrategy{}
+var _ rest.ResetFieldsStrategy = &StatusStrategy{}
 
 // GetResetFields returns the set of fields that get reset by the strategy
 // and should not be modified by the user.

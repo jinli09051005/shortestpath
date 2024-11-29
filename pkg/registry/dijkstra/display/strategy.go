@@ -30,6 +30,7 @@ var _ rest.RESTCreateStrategy = &Strategy{}
 var _ rest.RESTUpdateStrategy = &Strategy{}
 var _ rest.RESTDeleteStrategy = &Strategy{}
 var _ rest.GarbageCollectionDeleteStrategy = &Strategy{}
+var _ rest.ResetFieldsStrategy = &Strategy{}
 
 // NewStrategy creates and returns a updateconfigStrtegy instance
 func NewStrategy(typer runtime.ObjectTyper, dijkstraClient dijkstraclient.DijkstraInterface) Strategy {
@@ -202,6 +203,9 @@ func MatchDisplay(label labels.Selector, field fields.Selector) storage.Selectio
 type StatusStrategy struct {
 	Strategy
 }
+
+var _ rest.RESTUpdateStrategy = &StatusStrategy{}
+var _ rest.ResetFieldsStrategy = &StatusStrategy{}
 
 // NewStrategy creates and returns a updateconfigStrtegy instance
 func NewStatusStrategy(strategy Strategy) StatusStrategy {

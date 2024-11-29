@@ -13,7 +13,6 @@ import (
 	genericregistry "k8s.io/apiserver/pkg/registry/generic/registry"
 	"k8s.io/apiserver/pkg/registry/rest"
 	"k8s.io/kubernetes/pkg/printers"
-	"sigs.k8s.io/structured-merge-diff/v4/fieldpath"
 )
 
 type REST struct {
@@ -22,14 +21,12 @@ type REST struct {
 }
 
 var _ rest.ShortNamesProvider = &REST{}
+var _ rest.CategoriesProvider = &REST{}
 
 // ShortNames implements the ShortNamesProvider interface. Returns a list of short names for a resource.
 func (r *REST) ShortNames() []string {
 	return []string{"dp"}
 }
-
-// Implement CategoriesProvider
-var _ rest.CategoriesProvider = &REST{}
 
 // Categories implements the CategoriesProvider interface. Returns a list of categories a resource is part of.
 func (r *REST) Categories() []string {
@@ -93,11 +90,13 @@ var _ rest.Storage = &StatusREST{}
 var _ rest.Getter = &StatusREST{}
 var _ rest.Patcher = &StatusREST{}
 var _ rest.Updater = &StatusREST{}
+var _ rest.TableConvertor = &StatusREST{}
 
 // genericregistry.Store实现了CRUD，如果想定义自己的，可以在这里覆盖
 // New returns empty Display object.
 func (r *StatusREST) New() runtime.Object {
-	return &dijkstra.Display{}
+	return r.store.NewFunc()
+	// return &dijkstra.Display{}
 }
 
 // Destroy cleans up resources on shutdown.
@@ -116,11 +115,6 @@ func (r *StatusREST) Update(ctx context.Context, name string, objInfo rest.Updat
 	// We are explicitly setting forceAllowCreate to false in the call to the underlying storage because
 	// subresources should never allow create on update.
 	return r.store.Update(ctx, name, objInfo, createValidation, updateValidation, false, options)
-}
-
-// GetResetFields implements rest.ResetFieldsStrategy
-func (r *StatusREST) GetResetFields() map[fieldpath.APIVersion]*fieldpath.Set {
-	return r.store.GetResetFields()
 }
 
 func (r *StatusREST) ConvertToTable(ctx context.Context, object runtime.Object, tableOptions runtime.Object) (*metav1.Table, error) {
