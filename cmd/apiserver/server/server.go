@@ -10,19 +10,19 @@ import (
 	genericapiserver "k8s.io/apiserver/pkg/server"
 )
 
-type CustemExtenSetrver struct {
+type APIServer struct {
 	serverName string
 	server     *genericapiserver.GenericAPIServer
 }
 
-func CreateCustemExtenSetrver(serverName string) *CustemExtenSetrver {
-	return &CustemExtenSetrver{
+func CreateAPIServer(serverName string) *APIServer {
+	return &APIServer{
 		serverName: serverName,
 	}
 }
 
 // 创建自定义扩展API Server实例
-func (ces *CustemExtenSetrver) CreateServerChain(opts *options.Options) error {
+func (ces *APIServer) CreateServerChain(opts *options.Options) error {
 	// 根据options创建普通配置
 	cfg, err := config.CreateConfigFromOptions(ces.serverName, opts)
 	if err != nil {
@@ -49,7 +49,7 @@ func (ces *CustemExtenSetrver) CreateServerChain(opts *options.Options) error {
 }
 
 // 运行自定义扩展API Server实例
-func (ces *CustemExtenSetrver) Run(stopCh <-chan struct{}) error {
+func (ces *APIServer) Run(stopCh <-chan struct{}) error {
 	return ces.server.PrepareRun().Run(stopCh)
 }
 

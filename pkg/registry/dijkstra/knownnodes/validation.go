@@ -17,7 +17,7 @@ func ValidateKnownNodes(kn *dijkstra.KnownNodes) field.ErrorList {
 	return errors
 }
 
-func ValidateDisplayUpdate(new, old *dijkstra.KnownNodes) field.ErrorList {
+func ValidateKnownNodesUpdate(new, old *dijkstra.KnownNodes) field.ErrorList {
 	errors := field.ErrorList{}
 	// 不允许修改nodeIdentity
 	if new.Spec.NodeIdentity != old.Spec.NodeIdentity {

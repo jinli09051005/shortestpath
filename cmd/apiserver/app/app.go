@@ -18,7 +18,7 @@ func CustomExtenAPIServer(o *options.Options, stopCh <-chan struct{}) *cobra.Com
 			if err := o.Validate(); err != nil {
 				return err
 			}
-			apiserver := server.CreateCustemExtenSetrver("jinli-dijkstra-api")
+			apiserver := server.CreateAPIServer("jinli-dijkstra-api")
 			if err := apiserver.CreateServerChain(o); err != nil {
 				return err
 			}

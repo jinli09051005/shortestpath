@@ -131,7 +131,7 @@ func (s Strategy) ValidateUpdate(ctx context.Context, obj, old runtime.Object) f
 	newKnownNodes := obj.(*dijkstra.KnownNodes)
 	oldKnownNodes := old.(*dijkstra.KnownNodes)
 
-	return ValidateDisplayUpdate(newKnownNodes, oldKnownNodes)
+	return ValidateKnownNodesUpdate(newKnownNodes, oldKnownNodes)
 }
 
 func (s Strategy) WarningsOnUpdate(ctx context.Context, obj, old runtime.Object) []string {

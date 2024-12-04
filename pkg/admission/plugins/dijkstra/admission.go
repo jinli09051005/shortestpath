@@ -39,6 +39,8 @@ func New() (*DijkstraPlugin, error) {
 
 // 实现自定义插件接口
 var _ custominitializer.WantsInformerFactory = &DijkstraPlugin{}
+var _ admission.InitializationValidator = &DijkstraPlugin{}
+var _ admission.ValidationInterface = &DijkstraPlugin{}
 
 func (dp *DijkstraPlugin) SetInformerFactory(f informers.SharedInformerFactory) {
 	// admission.PluginInitializer自动调用，启动lister
