@@ -26,6 +26,6 @@ func (c CompletedConfig) New() (*CustomExtenServer, error) {
 		},
 	}
 	// 安装扩展REST API服务
-	cs.InstallAPIS(c.ExtraConfig, c.GenericConfig.RESTOptionsGetter, restStorageProviders...)
+	cs.InstallAPIS(c.GenericConfig.RESTOptionsGetter, restStorageProviders...)
 	return cs, nil
 }

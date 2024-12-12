@@ -35,7 +35,7 @@ func init() {
 }
 
 // 安装REST API
-func (cs *CustomExtenServer) InstallAPIS(extraConfig *ExtraConfig, optsGetter generic.RESTOptionsGetter, restStorageProviders ...storage.RESTStorageProvider) {
+func (cs *CustomExtenServer) InstallAPIS(optsGetter generic.RESTOptionsGetter, restStorageProviders ...storage.RESTStorageProvider) {
 	var apiGroupsInfo []genericapiserver.APIGroupInfo
 
 	for _, restStoragerBuilder := range restStorageProviders {
