@@ -61,7 +61,7 @@ func NewKnController(client *dijkstraclient.Clientset, dijkstraFactory dijkstrai
 		},
 	}
 
-	knInformer.Informer().AddEventHandler(predicates)
+	kc.knInformer.AddEventHandler(predicates)
 
 	return kc
 }
